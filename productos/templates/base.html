@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Inventario{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"> <!-- Para iconos -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            display: flex;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40; /* Color del sidebar */
+        }
+        .sidebar a {
+            color: #fff;
+        }
+        .sidebar a:hover {
+            background-color: #495057; /* Color al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar p-3">
+        <div class="text-center mb-4">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid" style="max-height: 80px;">
+        </div>
+        <h4 class="text-white">Menú</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </li>
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <div class="p-3">
+            {% if user.is_authenticated %}
+                <h5>Hola, {{ user.username }}</h5>
+            {% else %}
+                <p><a href="{% url 'login' %}">Iniciar sesión</a> | <a href="{% url 'registro' %}">Registrarse</a></p>
+            {% endif %}
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
