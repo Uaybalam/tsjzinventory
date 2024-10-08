@@ -15,13 +15,15 @@ def registro(request):
             user = form.save()
             login(request, user)
             return redirect('dashboard')
+        else:
+            return render(request, 'registration/registro.html', {'form': form, 'error': 'Error en el formulario'})
     else:
         form = RegistroForm()
     return render(request, 'registration/registro.html', {'form': form})    
 
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -34,7 +36,7 @@ def login_view(request):
                 print("Error de autenticación")
                 return render(request, 'login.html', {'form': form, 'error': 'Credenciales incorrectas'})
         else:
-            # Añadir un mensaje de error si el formulario no es válido
+            print("Formulario inválido")
             return render(request, 'login.html', {'form': form, 'error': 'Formulario inválido'})
     else:
         form = AuthenticationForm()
@@ -42,7 +44,8 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login.html')  # Redirigir al login después de cerrar sesión
+    messages.success(request, 'Has cerrado sesión con éxito.')
+    return redirect('login')  # Redirigir al login después de cerrar sesión
 
 @login_required
 def dashboard(request):

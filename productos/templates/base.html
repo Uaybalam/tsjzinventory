@@ -35,7 +35,10 @@
                 <a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+                <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link btn btn-link text-white"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+                </form>
             </li>
         </ul>
     </div>
