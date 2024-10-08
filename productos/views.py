@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect #render: Para generar una respuesta HTML basada en plantillas y enviarla al usuario. redirect: Para redirigir a una URL diferente (por ejemplo, después del login o registro exitoso).
+from django.shortcuts import render, redirect, get_object_or_404 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import RegistroForm
 from .models import Producto
 from .forms import ProductoForm
+from django.contrib import messages
+
 
 def registro(request):
     if request.method == "POST":
@@ -44,13 +46,16 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
-    print(request.user)
-    productos = Producto.objects.all()  # Obtén todos los productos
+    query = request.GET.get('query')  # Capturamos el término de búsqueda del formulario
+    if query:
+        productos = Producto.objects.filter(nombre__icontains=query)  # Filtrar productos por nombre que contiene el término
+    else:
+        productos = Producto.objects.all()  # Si no hay término de búsqueda, muestra todos los productos
     total_productos = productos.count()
-    return render(request, 'dashboard.html',{
+    return render(request, 'dashboard.html', {
         'productos': productos,
-        'total_productos' : total_productos
-    })    
+        'total_productos': total_productos,
+    })
 
 @login_required
 def agregar_producto(request):
@@ -58,6 +63,7 @@ def agregar_producto(request):
         form = ProductoForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Producto agregado con éxito.')
             return redirect('dashboard')
     else:
         form = ProductoForm()
@@ -70,16 +76,18 @@ def editar_producto(request, producto_id):
         form = ProductoForm(request.POST, instance=producto)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Producto editado con éxito.')
             return redirect('dashboard')
     else:
         form = ProductoForm(instance=producto)
     return render(request, 'editar_producto.html', {'form':form})
 
 @login_required
-def eliminar_producto(request, pk):
-    producto = get_object_or_404(Producto, pk=pk)
+def eliminar_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
     if request.method == 'POST':
         producto.delete()
+        messages.success(request, 'Producto eliminado con éxito.')
         return redirect('dashboard')
     return render(request, 'productos/eliminar_producto.html', {'producto': producto})
 
