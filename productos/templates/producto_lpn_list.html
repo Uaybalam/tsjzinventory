@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Productos LPN{% endblock %}
+
+{% block content %}
+<h2>Lista de Productos LPN</h2>
+<a href="{% url 'producto_lpn_create' %}" class="btn btn-primary mb-3">Agregar Producto LPN</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto_lpn in productos_lpn %}
+        <tr>
+            <td>{{ producto_lpn.nombre }}</td>
+            <td>
+                <a href="{% url 'producto_lpn_update' producto_lpn.id_producto_lpn %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'producto_lpn_delete' producto_lpn.id_producto_lpn %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

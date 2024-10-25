@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Lista de Perfiles</h2>
+<a href="{% url 'perfil_create' %}" class="btn btn-primary mb-3">Agregar Perfil</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for perfil in perfiles %}
+        <tr>
+            <td>{{ perfil.nombre }}</td>
+            <td>{{ perfil.rol }}</td>
+            <td>
+                <a href="{% url 'perfil_update' perfil.id_perfil %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'perfil_delete' perfil.id_perfil %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

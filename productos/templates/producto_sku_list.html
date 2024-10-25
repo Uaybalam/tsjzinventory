@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Productos SKU{% endblock %}
+
+{% block content %}
+<h2>Lista de Productos SKU</h2>
+<a href="{% url 'producto_sku_create' %}" class="btn btn-primary mb-3">Agregar Producto SKU</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Código SKU</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto_sku in productos_sku %}
+        <tr>
+            <td>{{ producto_sku.nombre }}</td>
+            <td>{{ producto_sku.descripcion }}</td>
+            <td>{{ producto_sku.categoria }}</td>
+            <td>{{ producto_sku.codigo_sku }}</td>
+            <td>
+                <a href="{% url 'producto_sku_update' producto_sku.id_producto_sku %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'producto_sku_delete' producto_sku.id_producto_sku %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

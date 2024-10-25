@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Personal{% endblock %}
+
+{% block content %}
+<h2>Lista de Personal</h2>
+<a href="{% url 'personal_create' %}" class="btn btn-primary mb-3">Agregar Personal</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for personal in personal %}
+        <tr>
+            <td>{{ personal.nombre }}</td>
+            <td>
+                <a href="{% url 'personal_update' personal.id_personal %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'personal_delete' personal.id_personal %}" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
